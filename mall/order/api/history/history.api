@@ -1,0 +1,35 @@
+syntax = "v1"
+
+info(
+    title: "type title here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+type OrderHistoryRequest {
+    OrderSn string `json:"orderSn,optional"`
+}
+
+type OrderHistoryRes {
+    List []OrderDetail `json:"list"`
+    Total uint64 `json:"total"`
+}
+type OrderDetail {
+    OrderSn string `json:"orderSn"`
+    PayStatus uint64 `json:"payStatus"`
+    PayAmount uint64 `json:"payAmount"`
+    Receipt string `json:"receipt"`
+    PayMethod string `json:"payMethod"`
+}
+
+@server(
+    group: history
+    middleware: UserMiddleware
+    prefix: /api
+)
+service order {
+    @handler orderHistoryList
+    get /order/history/list (OrderHistoryRequest) returns (OrderHistoryRes)
+}

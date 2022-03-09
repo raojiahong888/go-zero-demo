@@ -1,0 +1,56 @@
+syntax = "v1"
+
+import (
+	"payment/payment.api"
+	"history/history.api"
+)
+
+type (
+	OrderReq {
+		Id string `path:"id"`
+	}
+
+	OrderReply {
+		Id   string `json:"id"`
+		Name string `json:"name"`
+	}
+
+	OrderDetailReq {
+		OrderSn string `path:"orderSn"`
+	}
+
+	OrderDetailReply {
+		OrderSn   string `json:"orderSn"`
+		PayStatus uint64 `json:"payStatus"`
+		PayAmount uint64 `json:"payAmount"`
+		Receipt   string `json:"receipt"`
+		PayMethod string `json:"payMethod"`
+	}
+
+	OrderCreateReq {
+		OrderSn     string `json:"orderSn"`
+		TotalAmount uint64 `json:"totalAmount"`
+		PayAmount   uint64 `json:"payAmount"`
+	}
+
+	OrderCreateReply {
+		Id        uint64 `json:"id"`
+		OrderSn   string `json:"orderSn"`
+		PayAmount uint64 `json:"payAmount"`
+	}
+)
+
+@server(
+	middleware: UserMiddleware
+	prefix: /api
+)
+service order {
+	@handler orderCreate
+	post /order/create (OrderCreateReq) returns (OrderCreateReply)
+	
+	@handler orderDetail
+	get /order/detail/:orderSn (OrderDetailReq) returns (OrderDetailReply)
+	
+	@handler getOrder
+	get /order/get/:id (OrderReq) returns (OrderReply)
+}

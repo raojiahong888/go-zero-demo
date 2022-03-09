@@ -1,0 +1,50 @@
+syntax = "v1"
+
+info(
+    title: "type title here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+
+type PayRequest {
+    OrderSn string `json:"orderSn"`
+}
+
+type PayResponse {
+    OrderSn string `json:"orderSn"`
+    Receipt string `json:"receipt"`
+    PayStatus uint64 `json:"payStatus"`
+}
+
+type PayCallBackRequest {
+    OrderSn string `json:"orderSn"`
+    PayStatus uint64 `json:"payStatus"`
+    PayAmount uint64 `json:"payAmount"`
+    Receipt string `json:"receipt"`
+    PayMethod string `json:"payMethod"`
+}
+type PayCallBackResponse {
+    OrderSn string `json:"orderSn"`
+    PayStatus uint64 `json:"payStatus"`
+    PayAmount uint64 `json:"payAmount"`
+    Receipt string `json:"receipt"`
+    PayMethod string `json:"payMethod"`
+    PayDate string `json:"payDate"`
+}
+
+
+@server(
+    group: payment
+    middleware: UserMiddleware
+    prefix: /api
+)
+service order {
+    @handler paymentCallBack
+    get /payment/call-back (PayCallBackRequest) returns (PayCallBackResponse)
+
+    @handler paymentSubmit
+    post /payment/submit (PayRequest) returns (PayResponse)
+}

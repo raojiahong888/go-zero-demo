@@ -1,0 +1,20 @@
+Name: order
+Host: 0.0.0.0
+Port: 8888
+Mysql:
+  Host: localhost
+  Port: 3306
+  Database: go-zero-demo
+  User: root
+  Password: rjh920315
+  Charset: utf8
+  SqlLog: true
+  MaxIdleConns: 10 #Maximum number of connections when idle
+  MaxOpenConns: 100 #Maximum connections
+  MaxConnLifetime: 30s #Maximum connections
+  Timezone: Asia/Shanghai
+UserRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: user.rpc
